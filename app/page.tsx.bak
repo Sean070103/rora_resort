@@ -1,0 +1,220 @@
+﻿'use client'
+
+import { useState } from 'react'
+import { ArrowDown, ArrowRight, CalendarDays, Check, ChevronLeft, ChevronRight, Clock3, MapPin, Menu, Phone, X } from 'lucide-react'
+
+const photos = [
+  { src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ptJYAW4Nc0nc5uSjXobR2m1gYIIkIx.png', alt: 'Turquoise swimming pool beneath a bright sky and tropical garden', label: 'The garden pool', category: 'Pool' },
+  { src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-1gxchwNgwDNiM3hBJ8qqRvwmLNqMzQ.png', alt: 'A calm pool framed by tall trees and flowering bougainvillea', label: 'A quieter kind of day', category: 'Garden' },
+  { src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-wLIUSTxIiOrRcdtn3VVKEMpDdOt6Xy.png', alt: 'Resort swimming pool looking out toward the lake', label: 'By the water', category: 'Pool' },
+  { src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-BHGKOr0SoJ5WMof3lmd8NfNRgRsxEb.png', alt: 'The resort entrance beneath a red tiled roof and mature trees', label: 'A warm welcome', category: 'Resort' },
+]
+
+const facilities = [
+  { number: '01', name: 'Swimming pool', note: 'A refreshing centrepiece for long, sunny afternoons.', icon: 'â†—' },
+  { number: '02', name: 'Garden grounds', note: 'Lush green spaces made for slowing down together.', icon: 'â†—' },
+  { number: '03', name: 'Gazebo & gathering', note: 'Shaded corners for good conversations and celebrations.', icon: 'â†—' },
+  { number: '04', name: 'Lakefront views', note: 'A peaceful setting to take in the beauty of Laguna.', icon: 'â†—' },
+]
+
+export default function Home() {
+  const [bookingOpen, setBookingOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [activePhoto, setActivePhoto] = useState<number | null>(null)
+  const [galleryFilter, setGalleryFilter] = useState('All')
+  const [submitted, setSubmitted] = useState(false)
+  const [checkin, setCheckin] = useState('')
+  const [guests, setGuests] = useState('2 guests')
+
+  const filteredPhotos = galleryFilter === 'All' ? photos : photos.filter((photo) => photo.category === galleryFilter)
+
+  function openBooking() {
+    setSubmitted(false)
+    setBookingOpen(true)
+  }
+
+  return (
+    <main>
+      {/* Announcement bar hidden â€” staff links removed from public landing page */}
+      <header className="site-header">
+        <a className="wordmark" href="#home" aria-label="Queen Aurora's Garden Resort home"><span className="wordmark-flower">âœ³</span><span>QUEEN AURORA&apos;S</span><small>GARDEN RESORT</small></a>
+        <nav className={mobileOpen ? 'main-nav is-open' : 'main-nav'} aria-label="Main navigation">
+          <a href="#story" onClick={() => setMobileOpen(false)}>The resort</a><a href="#facilities" onClick={() => setMobileOpen(false)}>Experiences</a><a href="#gallery" onClick={() => setMobileOpen(false)}>Gallery</a><a href="#rates" onClick={() => setMobileOpen(false)}>Rates</a><a href="#visit" onClick={() => setMobileOpen(false)}>Find us</a>
+        </nav>
+        <div className="header-actions"><a className="text-link" href="tel:+639497405882">+63 949 740 5882</a><button className="button button-dark button-small" onClick={openBooking}>BOOK NOW <ArrowRight size={14} /></button></div>
+        <button className="menu-toggle" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button>
+      </header>
+
+      <section className="hero" id="home" style={{ backgroundImage: `linear-gradient(90deg, rgba(19,35,27,.54) 0%, rgba(19,35,27,.16) 53%, rgba(19,35,27,.04) 100%), url("${photos[2].src}")` }}>
+        <div className="hero-topline"><span>A LITTLE CLOSER TO NATURE</span><span>EST. IN LAGUNA Â· PHILIPPINES</span></div>
+        <div className="hero-copy"><p className="eyebrow light"><span /> YOUR GARDEN ESCAPE</p><h1>Room to breathe.<br /><em>Space to belong.</em></h1><p className="hero-description">A garden-side pause in Cabuyao, made for the people you love and the moments you want to keep.</p><div className="hero-buttons"><button className="button button-light" onClick={openBooking}>Plan your visit <ArrowRight size={16} /></button><a className="hero-text-link" href="#story">Discover the resort <ArrowDown size={14} /></a></div></div>
+        <div className="hero-caption"><span>01 / 04</span><span>GARDEN & LAKEFRONT RETREAT</span><span>MARINIG Â· CABUYAO</span></div>
+        <div className="booking-bar"><div className="booking-intro"><span className="booking-icon"><CalendarDays size={17} /></span><div><span className="mini-label">MAKE IT A DAY</span><strong>Start planning</strong></div></div><label className="booking-field"><span>VISIT DATE</span><input aria-label="Visit date" type="date" min={new Date().toISOString().slice(0, 10)} value={checkin} onChange={(event) => setCheckin(event.target.value)} /></label><label className="booking-field"><span>YOUR PARTY</span><select aria-label="Number of guests" value={guests} onChange={(event) => setGuests(event.target.value)}><option>2 guests</option><option>3â€“5 guests</option><option>6â€“10 guests</option><option>11+ guests</option></select></label><button className="button button-green booking-button" onClick={openBooking}>Check in with us <ArrowRight size={15} /></button></div>
+      </section>
+
+      <section className="intro section-pad" id="story"><div className="intro-aside"><span className="eyebrow"><span /> A PLACE TO UNWIND</span><span className="side-note">CABUYAO, LAGUNA<br />PHILIPPINES</span></div><div className="intro-content"><h2>Some days are best spent<br />a little <em>closer to nature.</em></h2><div className="intro-bottom"><p>At Queen Aurora&apos;s, the day moves at a gentler pace. Swim under an open sky, find a shady spot in the garden, and make a little more room for the moments that matter.</p><a href="#facilities" className="underlined-link">A look around <ArrowRight size={14} /></a></div></div></section>
+
+      <section className="photo-story"><div className="story-image" style={{ backgroundImage: `url("${photos[1].src}")` }} role="img" aria-label={photos[1].alt}><span>THE GARDEN POOL Â· A SUNNY AFTERNOON</span></div><div className="story-card"><span className="eyebrow"><span /> EASY DOES IT</span><p className="story-quote">â€œA change of scenery can change the whole <em>feeling</em> of a day.â€</p><div className="story-card-bottom"><span>YOUR TIME, YOUR PACE</span><span className="ornament">âœ³</span></div></div></section>
+
+      <section className="facilities section-pad" id="facilities"><div className="section-heading"><div><span className="eyebrow"><span /> SPACE TO MAKE YOUR OWN</span><h2>A day that feels<br /><em>like yours.</em></h2></div><p>Come for a swim, stay for the company. Explore the spaces that make a simple day feel like a little getaway.</p></div><div className="facility-list">{facilities.map((facility) => <article className="facility-row" key={facility.number}><span className="facility-number">{facility.number}</span><h3>{facility.name}</h3><p>{facility.note}</p><span className="facility-arrow" aria-hidden="true">{facility.icon}</span></article>)}</div><p className="facility-note">Facility access and availability may vary. Please contact us to plan your visit.</p></section>
+
+      <section className="gallery-section section-pad" id="gallery"><div className="gallery-heading"><div><span className="eyebrow"><span /> AROUND THE GARDEN</span><h2>Little moments,<br /><em>in the open air.</em></h2></div><div className="gallery-controls" role="group" aria-label="Filter gallery">{['All', 'Pool', 'Garden', 'Resort'].map((filter) => <button className={galleryFilter === filter ? 'filter active' : 'filter'} key={filter} onClick={() => setGalleryFilter(filter)}>{filter}</button>)}</div></div><div className="gallery-grid">{filteredPhotos.map((photo) => { const index = photos.indexOf(photo); return <button key={photo.src} className={`gallery-item gallery-${index + 1}`} onClick={() => setActivePhoto(index)} aria-label={`View photo: ${photo.label}`}><img src={photo.src} alt={photo.alt} /><span className="gallery-label">{photo.label}<span>â†—</span></span></button> })}</div></section>
+
+      {/* â”€â”€ Rates & Info â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <section className="rates-section section-pad" id="rates">
+        <div className="rates-heading">
+          <span className="eyebrow"><span /> WHAT TO EXPECT</span>
+          <h2>Rates &amp;<br /><em>information.</em></h2>
+          <p>Everything you need to plan your visit â€” entrance fees, rooms, event venues, and resort policies.</p>
+        </div>
+
+        {/* Swimming */}
+        <div className="rates-block">
+          <h3 className="rates-block-title">Swimming</h3>
+          <table className="rates-table">
+            <thead><tr><th>Schedule</th><th>Rate / head</th></tr></thead>
+            <tbody>
+              <tr><td>Day Swimming <span className="rates-note">7 AM â€“ 5 PM</span></td><td>â‚±150</td></tr>
+              <tr><td>Night Swimming <span className="rates-note">7 PM â€“ 5 AM</span></td><td>â‚±200</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Gazebo / Cottage */}
+        <div className="rates-block">
+          <h3 className="rates-block-title">Gazebo &amp; Cottage</h3>
+          <table className="rates-table">
+            <thead><tr><th>Capacity</th><th>Rate</th></tr></thead>
+            <tbody>
+              <tr><td>1â€“10 pax</td><td>â‚±1,500</td></tr>
+              <tr><td>11â€“15 pax</td><td>â‚±2,000</td></tr>
+              <tr><td>20 pax</td><td>â‚±3,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Rooms */}
+        <div className="rates-block rates-block-wide">
+          <h3 className="rates-block-title">Rooms &amp; Accommodations <span className="rates-note">Â· Rates are for 12 hours</span></h3>
+          <table className="rates-table">
+            <thead><tr><th>Room</th><th>Pax</th><th>Rate</th></tr></thead>
+            <tbody>
+              <tr><td>Deluxe Annex</td><td>2</td><td>â‚±2,000</td></tr>
+              <tr><td>Deluxe Room (1â€“11)</td><td>4</td><td>â‚±2,500</td></tr>
+              <tr><td>Deluxe Room 12</td><td>6</td><td>â‚±4,000</td></tr>
+              <tr><td>Deluxe Room 13</td><td>6</td><td>â‚±4,500</td></tr>
+              <tr><td>Family Room 1</td><td>10</td><td>â‚±6,000</td></tr>
+              <tr><td>Family Room 2</td><td>10</td><td>â‚±5,000</td></tr>
+              <tr><td>Family Room 3</td><td>15â€“16</td><td>â‚±8,000</td></tr>
+              <tr><td>Executive Room</td><td>2â€“3</td><td>â‚±4,000</td></tr>
+              <tr><td>Family Executive (1â€“5)</td><td>5</td><td>â‚±4,500</td></tr>
+              <tr><td>Dormitory Down</td><td>18</td><td>â‚±10,000</td></tr>
+              <tr><td>Dormitory Up</td><td>18</td><td>â‚±10,000</td></tr>
+              <tr><td className="rates-highlight">Family Package</td><td className="rates-highlight">30</td><td className="rates-highlight">â‚±18,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Events */}
+        <div className="rates-block rates-block-wide">
+          <h3 className="rates-block-title">Events Places &amp; Rentals</h3>
+          <table className="rates-table">
+            <thead><tr><th>Venue</th><th>Capacity</th><th>Rate</th></tr></thead>
+            <tbody>
+              <tr><td>Function Hall</td><td>100 pax</td><td>â‚±20,000</td></tr>
+              <tr><td>Function Hall (Half)</td><td>50 pax</td><td>â‚±12,500</td></tr>
+              <tr><td>Pavilion w/ Round Pool</td><td>100 pax</td><td>â‚±15,000</td></tr>
+              <tr><td>Octagon Hall</td><td>100 pax</td><td>â‚±25,000</td></tr>
+              <tr><td className="rates-highlight">Big Pavilion</td><td className="rates-highlight">200â€“300 pax</td><td className="rates-highlight">â‚±80,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Chair & Table Rentals */}
+        <div className="rates-block">
+          <h3 className="rates-block-title">Other Rentals <span className="rates-note">Â· For events only</span></h3>
+          <table className="rates-table">
+            <thead><tr><th>Item</th><th>Rate</th></tr></thead>
+            <tbody>
+              <tr><td>Monoblock Chair</td><td>â‚±10.00</td></tr>
+              <tr><td>Monoblock Chair with Cover</td><td>â‚±20.00</td></tr>
+              <tr><td>Tiffany Chair</td><td>â‚±75.00</td></tr>
+              <tr><td>Tables Round / Long</td><td>â‚±100.00</td></tr>
+              <tr><td>Tables Round / Long with Cover</td><td>â‚±165.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Policies */}
+        <div className="rates-block rates-policies">
+          <h3 className="rates-block-title">Resort Policies</h3>
+          <ul className="policy-list">
+            <li>ðŸš« Strictly <strong>NO PETS ALLOWED</strong></li>
+            <li>ðŸ¡ <strong>NO COTTAGE, NO ENTRY</strong></li>
+            <li>ðŸ’³ Upon reservation, payment is <strong>NON-REFUNDABLE</strong></li>
+            <li>ðŸ”’ Payment is <strong>NON-TRANSFERABLE</strong></li>
+          </ul>
+          <p className="rates-disclaimer">Rates and policies are subject to change without prior notice. Contact the resort to confirm current availability and pricing.</p>
+        </div>
+      </section>
+
+      <section className="visit-section" id="visit"><div className="visit-image" style={{ backgroundImage: `url("${photos[3].src}")` }} role="img" aria-label={photos[3].alt} /><div className="visit-content"><span className="eyebrow light"><span /> YOUR NEXT DAY OUT</span><h2>Find your way<br /><em>to the garden.</em></h2><p>We&apos;re in Marinig, Cabuyao City, Laguna. Get in touch and we&apos;ll help you plan a visit that feels just right.</p><div className="visit-details"><div><MapPin size={17} /><span>Marinig, Cabuyao City<br />Laguna, Philippines</span></div><div><Phone size={17} /><a href="tel:+639497405882">+63 949 740 5882</a></div><div><Clock3 size={17} /><span>Contact us for current visiting hours</span></div></div><button className="button button-light" onClick={openBooking}>Ask about a visit <ArrowRight size={15} /></button><a className="maps-link" href="https://maps.google.com/?q=Queen+Aurora%27s+Garden+Resort+Marinig+Cabuyao+Laguna" target="_blank" rel="noreferrer">Open directions <ArrowRight size={13} /></a></div></section>
+
+      <footer className="footer">
+        <a className="wordmark footer-wordmark" href="#home"><span className="wordmark-flower">âœ³</span><span>QUEEN AURORA&apos;S</span><small>GARDEN RESORT</small></a>
+        <span className="footer-copy">A garden escape in Cabuyao, Laguna.</span>
+        <div className="footer-links">
+          <a href="/book" style={{ color: '#8b7240', fontWeight: 'bold' }}>Online Booking</a>
+          <a href="/receptionist">Reception Desk</a>
+          <a href="/login">Staff Portal</a>
+          <a href="tel:+639497405882">Call us</a>
+          <a href="https://www.facebook.com/queenaurorasgardenresort" target="_blank" rel="noreferrer">Facebook <ArrowRight size={12} /></a>
+        </div>
+        <span className="copyright">Â© {new Date().getFullYear()} QUEEN AURORA&apos;S</span>
+      </footer>
+
+      {bookingOpen && (
+        <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setBookingOpen(false) }}>
+          <section className="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-title">
+            <button className="modal-close" onClick={() => setBookingOpen(false)} aria-label="Close enquiry form"><X /></button>
+            {submitted ? (
+              <div className="modal-success">
+                <span className="success-mark"><Check /></span>
+                <span className="eyebrow"><span /> READY WHEN YOU ARE</span>
+                <h2>Let&apos;s make a day<br /><em>of it.</em></h2>
+                <p>Enquiry received! You can also book directly with real-time room availability, automatic loyalty discounts, and instant reservation confirmation:</p>
+                <a className="button button-dark" href={`/book?checkIn=${encodeURIComponent(checkin)}`} style={{ marginBottom: '10px' }}>
+                  Book Online With Live Availability <ArrowRight size={14} />
+                </a>
+                <a className="button button-light" href="tel:+639497405882"><Phone size={15} /> Call +63 949 740 5882</a>
+                <button className="underlined-link modal-dismiss" onClick={() => setBookingOpen(false)}>Back to the garden</button>
+              </div>
+            ) : (
+              <>
+                <span className="eyebrow"><span /> A VISIT TO LOOK FORWARD TO</span>
+                <h2 id="booking-title">Tell us what<br /><em>you have in mind.</em></h2>
+                <div style={{ margin: '14px 0', padding: '10px 14px', background: '#eaf0e6', border: '1px solid #c9d6c3', borderRadius: '6px', fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                  <span>Want instant room selection & loyalty discounts?</span>
+                  <a href="/book" style={{ color: '#263e32', fontWeight: 'bold', textDecoration: 'underline', whiteSpace: 'nowrap' }}>Open Booking Engine â†’</a>
+                </div>
+                <p className="modal-description">Share a few details and reach us directly to confirm availability. Reservations are not confirmed until arranged with the resort team.</p>
+                <form onSubmit={(event) => { event.preventDefault(); setSubmitted(true) }}>
+                  <label>Your name<input required name="name" autoComplete="name" placeholder="How should we address you?" /></label>
+                  <label>Mobile number<input required name="phone" type="tel" autoComplete="tel" placeholder="+63" /></label>
+                  <div className="form-row">
+                    <label>Preferred date<input required type="date" min={new Date().toISOString().slice(0, 10)} value={checkin} onChange={(event) => setCheckin(event.target.value)} /></label>
+                    <label>Group size<select value={guests} onChange={(event) => setGuests(event.target.value)}><option>2 guests</option><option>3â€“5 guests</option><option>6â€“10 guests</option><option>11+ guests</option></select></label>
+                  </div>
+                  <button className="button button-dark submit-button" type="submit">Continue to contact details <ArrowRight size={15} /></button>
+                </form>
+                <p className="privacy-note"><Phone size={13} /> Your enquiry stays between you and our team.</p>
+              </>
+            )}
+          </section>
+        </div>
+      )}
+      {activePhoto !== null && <div className="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery" onMouseDown={(event) => { if (event.target === event.currentTarget) setActivePhoto(null) }}><button className="lightbox-close" aria-label="Close gallery" onClick={() => setActivePhoto(null)}><X /></button><button className="lightbox-arrow previous" aria-label="Previous image" onClick={() => setActivePhoto((activePhoto + photos.length - 1) % photos.length)}><ChevronLeft /></button><img src={photos[activePhoto].src} alt={photos[activePhoto].alt} /><button className="lightbox-arrow next" aria-label="Next image" onClick={() => setActivePhoto((activePhoto + 1) % photos.length)}><ChevronRight /></button><span className="lightbox-caption">{photos[activePhoto].label} Â· {String(activePhoto + 1).padStart(2, '0')} / {String(photos.length).padStart(2, '0')}</span></div>}
+    </main>
+  )
+}
+
