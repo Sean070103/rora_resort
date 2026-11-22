@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
@@ -17,7 +17,7 @@ import { Badge } from '@/components/ui/badge'
 import { AppShell } from '@/components/layout/AppShell'
 import { Reservation, Wristband, Guest } from '@/lib/types'
 
-export default function AssignWristbandPage() {
+function AssignWristbandContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const preselectedResId = searchParams.get('reservationId')
@@ -212,5 +212,21 @@ export default function AssignWristbandPage() {
       </div>
     </div>
     </AppShell>
+  )
+}
+
+export default function AssignWristbandPage() {
+  return (
+    <Suspense
+      fallback={
+        <AppShell title="Assign Wristband" subtitle="Pair an available NFC wristband with a verified reservation">
+          <div className="max-w-2xl mx-auto p-8 text-center text-stone-500 text-sm">
+            Loading assignment form...
+          </div>
+        </AppShell>
+      }
+    >
+      <AssignWristbandContent />
+    </Suspense>
   )
 }
